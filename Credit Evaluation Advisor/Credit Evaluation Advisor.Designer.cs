@@ -67,6 +67,7 @@
             help = new Button();
             restart = new Button();
             exit = new Button();
+            deny_credit = new Button();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)list_of_requests).BeginInit();
@@ -560,12 +561,27 @@
             exit.UseVisualStyleBackColor = true;
             exit.Click += exit_Click;
             // 
+            // deny_credit
+            // 
+            deny_credit.BackColor = Color.FromArgb(192, 0, 0);
+            deny_credit.Cursor = Cursors.Hand;
+            deny_credit.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            deny_credit.ForeColor = Color.White;
+            deny_credit.Location = new Point(474, 366);
+            deny_credit.Name = "deny_credit";
+            deny_credit.Size = new Size(314, 39);
+            deny_credit.TabIndex = 16;
+            deny_credit.Text = "Deny Credit";
+            deny_credit.UseVisualStyleBackColor = false;
+            deny_credit.Click += deny_credit_Click_1;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(800, 591);
+            Controls.Add(deny_credit);
             Controls.Add(exit);
             Controls.Add(restart);
             Controls.Add(help);
@@ -635,5 +651,6 @@
         private Button help;
         private Button restart;
         private Button exit;
+        private Button deny_credit;
     }
 }

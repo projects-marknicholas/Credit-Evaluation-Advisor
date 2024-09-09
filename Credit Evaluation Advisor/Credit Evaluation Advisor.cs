@@ -15,6 +15,10 @@ namespace Credit_Evaluation_Advisor
         {
             InitializeComponent();
 
+            // Hide buttons initially
+            give_credit.Visible = false;
+            deny_credit.Visible = false;
+
             // Link button click events
             btnPrevious.Click += btnPrevious_Click;
             btnNext.Click += btnNext_Click;
@@ -110,7 +114,7 @@ namespace Credit_Evaluation_Advisor
         {
             if (dataTable != null && rowIndex >= 0 && rowIndex < dataTable.Rows.Count)
             {
-                // Assuming you have controls to display request details
+                // Fetch data from the row
                 DataRow row = dataTable.Rows[rowIndex];
                 string requested_credit = row["requested_credit"].ToString();
                 string currency_deposits = row["currency_deposits"].ToString();
@@ -119,10 +123,10 @@ namespace Credit_Evaluation_Advisor
                 string networth_to_assets = row["net_worth_to_assets"].ToString();
                 string last_year_sales_growth = row["last_year_sales_growth"].ToString();
                 string growth_profit_on_sales = row["growth_profit_on_sales"].ToString();
-                string short_tem_debt_to_sales = row["short_term_debt_to_sales"].ToString();
+                string short_term_debt_to_sales = row["short_term_debt_to_sales"].ToString();
                 string expected_yield = row["expected_yield"].ToString();
 
-                // Update controls with details (e.g., TextBoxes, Labels)
+                // Update controls with the request details
                 requested_credit_value.Text = requested_credit;
                 currency_deposits_value.Text = currency_deposits;
                 stocks_value.Text = stocks;
@@ -130,29 +134,38 @@ namespace Credit_Evaluation_Advisor
                 networth_to_assets_value.Text = networth_to_assets;
                 last_year_sales_growth_value.Text = last_year_sales_growth;
                 growth_profit_on_sales_value.Text = growth_profit_on_sales;
-                short_tem_debt_to_sales_value.Text = short_tem_debt_to_sales;
+                short_tem_debt_to_sales_value.Text = short_term_debt_to_sales;
                 expected_yield_value.Text = expected_yield;
 
-                // Validate yield value
-                double yieldValue;
-                if (double.TryParse(expected_yield, out yieldValue))
+                // Calculate ratings
+                double requestedCredit = double.Parse(requested_credit);
+                double currencyDeposits = double.Parse(currency_deposits);
+                double stocksAmount = double.Parse(stocks);
+                double mortgagesAmount = double.Parse(mortgages);
+                double networthToAssets = double.Parse(networth_to_assets);
+                double lastYearSalesGrowth = double.Parse(last_year_sales_growth);
+                double growthProfitOnSales = double.Parse(growth_profit_on_sales);
+                double shortTermDebtToSales = double.Parse(short_term_debt_to_sales);
+                double expectedYield = double.Parse(expected_yield);
+
+                // Evaluate collateral and financial ratings
+                string collateralRating = EvaluateCollateralRating(currencyDeposits + stocksAmount + mortgagesAmount, requestedCredit);
+                string financialRating = EvaluateFinancialRating(networthToAssets, lastYearSalesGrowth, growthProfitOnSales, shortTermDebtToSales, expectedYield);
+
+                // Display ratings
+                collateral_rating.Text = collateralRating;
+                financial_rating.Text = financialRating;
+
+                // Toggle button visibility based on the ratings
+                if ((collateralRating == "Strong" || collateralRating == "Moderate") && (financialRating == "Strong" || financialRating == "Moderate"))
                 {
-                    if (yieldValue >= 15)
-                    {
-                        expected_yield_value.Text = "Excellent";
-                    }
-                    else if (yieldValue >= 10 && yieldValue < 15)
-                    {
-                        expected_yield_value.Text = "Good";
-                    }
-                    else
-                    {
-                        expected_yield_value.Text = "Bad";
-                    }
+                    give_credit.Visible = true;
+                    deny_credit.Visible = false;
                 }
                 else
                 {
-                    MessageBox.Show("Invalid expected yield value.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    give_credit.Visible = false;
+                    deny_credit.Visible = true;
                 }
             }
         }
@@ -290,11 +303,6 @@ namespace Credit_Evaluation_Advisor
             // Add your custom paint logic here, if needed
         }
 
-        private void give_credit_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void give_credit_Click_1(object sender, EventArgs e)
         {
             if (dataTable != null && currentIndex >= 0 && currentIndex < dataTable.Rows.Count)
@@ -320,6 +328,11 @@ namespace Credit_Evaluation_Advisor
             {
                 MessageBox.Show("No request is selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void deny_credit_Click_1(object sender, EventArgs e)
+        {
+            MessageBox.Show("Credit request has been denied.", "Credit Denied", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void exit_Click(object sender, EventArgs e)

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Credit Evaluation Advisor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e2015471f8b24919e2f1ec357b3a73d58c4494cf")]
 [assembly: System.Reflection.AssemblyProductAttribute("Credit Evaluation Advisor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Credit Evaluation Advisor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
